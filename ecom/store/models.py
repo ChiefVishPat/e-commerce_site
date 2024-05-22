@@ -28,6 +28,13 @@ class Product(models.Model):
     description = models.CharField(max_length=250, default='', blank=True, null=True)
     image = models.ImageField(upload_to='uploads/product/')
 
+    #Add sale information
+    is_sale = models.BooleanField(default=False)
+    sale_price = models.DecimalField(default=0, decimal_places=2, max_digits=6)
+    # sale_start = models.DateField(default=datetime.datetime.today)
+    # sale_end = models.DateField(default=datetime.datetime.today)
+
+
     def __str__(self) -> str:
         return self.prod_name
 
