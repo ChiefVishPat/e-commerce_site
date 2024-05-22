@@ -77,6 +77,7 @@
   --bs-link-hover-color: #0a58ca;
   --bs-code-color: #d63384;
   --bs-highlight-bg: #fff3cd;
+  --bs-custom-red: #921b1b;  /*custom color */
 }
 
 *,
@@ -8154,6 +8155,10 @@ textarea.form-control-lg {
   background-color: rgba(var(--bs-danger-rgb), var(--bs-bg-opacity)) !important;
 }
 
+.bg-myred {
+    background-color: var(--bs-custom-red) !important;  /* Apply the custom red color as the background */
+}
+
 .bg-light {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
@@ -8207,6 +8212,7 @@ textarea.form-control-lg {
 .bg-gradient {
   background-image: var(--bs-gradient) !important;
 }
+
 
 .user-select-all {
   -webkit-user-select: all !important;
