@@ -28,7 +28,8 @@ It is the base template that all other templates will inherit from -->
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{% static 'css/styles.css'%}" rel="stylesheet" />
   </head>
-  <body>
+  <body style="display: flex; flex-direction: column;">
+    <div class="content-wrap" style="flex: 1;">
     {% include 'navbar.html' %} {% if messages %} {%for message in messages%}
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
       {{ message }}
@@ -40,6 +41,7 @@ It is the base template that all other templates will inherit from -->
       ></button>
     </div>
     {% endfor%} {% endif %} {% block content %} {% endblock %}
+    </div>
 
     <!-- Footer-->
     <footer class="py-5 bg-dark">
