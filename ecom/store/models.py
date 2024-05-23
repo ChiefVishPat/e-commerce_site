@@ -36,7 +36,7 @@ class Product(models.Model):
 
 
     def __str__(self):
-        return self.prod_name
+        return self.name
 
 #customer orders
 class Order(models.Model):
