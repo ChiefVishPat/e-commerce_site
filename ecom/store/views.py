@@ -9,6 +9,10 @@ from django.contrib import messages
 
 app_name = 'store'
 
+def product(request, pk):
+    product = Product.objects.get(id=pk)
+    return render(request, 'product.html', {'product': product})
+
 #directs to the home page
 def home(request):
     products = Product.objects.all()    #get all the products in the Product model

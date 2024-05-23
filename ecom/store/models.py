@@ -22,7 +22,7 @@ class Customer(models.Model):
     
 #all of our products
 class Product(models.Model):
-    prod_name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     price = models.DecimalField(default=0, decimal_places=2, max_digits=6) #ex of max digits: 9999.99
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
     description = models.CharField(max_length=250, default='', blank=True, null=True)
@@ -35,7 +35,7 @@ class Product(models.Model):
     # sale_end = models.DateField(default=datetime.datetime.today)
 
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.prod_name
 
 #customer orders
