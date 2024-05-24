@@ -27,24 +27,31 @@ It is the base template that all other templates will inherit from -->
     />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{% static 'css/styles.css'%}" rel="stylesheet" />
+
+    <!-- JQuery CDN -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
   </head>
-  <body style="display: flex; flex-direction: column;">
-    <div class="content-wrap" style="flex: 1;">
-    {% include 'navbar.html' %} {% if messages %} {%for message in messages%}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      {{ message }}
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="alert"
-        aria-label="Close"
-      ></button>
-    </div>
-    {% endfor%} {% endif %} {% block content %} {% endblock %}
+  <body style="display: flex; flex-direction: column">
+    <div class="content-wrap" style="flex: 1">
+      {% include 'navbar.html' %} {% if messages %} {%for message in messages%}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endfor%} {% endif %} {% block content %} {% endblock %}
     </div>
 
     <!-- Footer-->
-    <footer class="py-5 bg-dark ">
+    <footer class="py-5 bg-dark">
       <div class="container">
         <p class="m-0 text-center text-white">
           Copyright &copy; ChiefShopPat 2024

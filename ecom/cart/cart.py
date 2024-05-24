@@ -13,3 +13,15 @@ class Cart():
 
         #make sure cart is available on all pages of website
         self.cart = cart
+
+    #add a product to the cart
+    def add(self, product):
+        product_id = str(product.id)
+
+        #if the product is not in the cart, add it, else do nothing
+        if product_id not in self.cart:
+            self.cart[product_id] = {'price': str(product.price)}
+        else:
+            pass
+
+        self.session.modified = True
