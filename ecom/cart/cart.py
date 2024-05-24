@@ -25,3 +25,7 @@ class Cart():
             pass
 
         self.session.modified = True
+
+    #gets the quantity of the cart
+    def __len__(self):
+        return len(self.cart)

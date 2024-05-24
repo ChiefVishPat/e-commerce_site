@@ -21,8 +21,13 @@ def cart_add(request):
         #add the product to the cart in the session
         cart.add(product=product)
 
+        #get cart quantity
+        cart_quantity = cart.__len__()
+
         #return the response
-        return JsonResponse({'Product Name': product.name})
+        # response = JsonResponse({'Product Name': product.name})
+        response = JsonResponse({'qty': cart_quantity})
+        return response 
 
 
     return render(request, )
