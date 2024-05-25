@@ -21,6 +21,7 @@ class Cart():
     
     def get_quants(self):
         return self.cart
+
     
     def get_prods(self):
         #get ids from cart
@@ -30,6 +31,23 @@ class Cart():
         products = Product.objects.filter(id__in=product_ids)
 
         return products
+    
+    def cart_total(self):
+        product_ids = self.cart.keys()  #get product ids in the cart
+        products = Product.objects.filter(id__in=product_ids)   #lookup the keys in our products database model based off of the cart
+        qtys = self.cart    #get the quantities
+        total = 0
+
+        for key, value in qtys.items():
+            key = int(key)  #make sure product gets passed as int
+            for product in products:
+                if product.id == key:
+                    if product.is_sale:
+                        total += product.sale_price * value
+                    else:
+                        total += product.price * value
+
+        return total
 
     #add a product to the cart
     def add(self, product, quantity):
