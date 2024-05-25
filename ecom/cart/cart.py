@@ -45,6 +45,7 @@ class Cart():
 
         self.session.modified = True
 
+    #update product quantities in cart
     def update(self, product, quantity):
         product_id = str(product)
         product_qty = int(quantity)
@@ -57,5 +58,16 @@ class Cart():
         self.session.modified = True
         return user_cart
     
+    #delete a product from the cart
+    def delete(self, product):
+        product_id = str(product)
+
+        #if the product is in the cart, delete it
+        if product_id in self.cart:
+            del self.cart[product_id]
+        else:
+            pass
+
+        self.session.modified = True
     
 
