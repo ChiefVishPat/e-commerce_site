@@ -1,4 +1,5 @@
 #create a cart class that we can access throughout the website
+from store.models import Product
 class Cart():
     def __init__(self, request):
         #creating a session for the user
@@ -14,18 +15,36 @@ class Cart():
         #make sure cart is available on all pages of website
         self.cart = cart
 
+    #gets the quantity of the cart
+    def __len__(self):
+        return len(self.cart)
+    
+    def get_quants(self):
+        return self.cart
+    
+    def get_prods(self):
+        #get ids from cart
+        product_ids = self.cart.keys()
+
+        #use ids to lookup products in database model
+        products = Product.objects.filter(id__in=product_ids)
+
+        return products
+
     #add a product to the cart
-    def add(self, product):
+    def add(self, product, quantity):
         product_id = str(product.id)
+        product_qty = str(quantity)
 
         #if the product is not in the cart, add it, else do nothing
         if product_id not in self.cart:
-            self.cart[product_id] = {'price': str(product.price)}
+            # self.cart[product_id] = {'price': str(product.price)}
+            self.cart[product_id] = int(product_qty) 
         else:
             pass
 
         self.session.modified = True
 
-    #gets the quantity of the cart
-    def __len__(self):
-        return len(self.cart)
+    
+    
+

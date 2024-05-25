@@ -25,14 +25,24 @@
               {% else %}
                 <!-- Product price-->
                 ${{ product.price }}
-                <br/>ID: {{product.id}}
               {% endif %}
+              <br><br>
+              <div class="row justify-content-center">
+                <div class="col-md-2">Quantity: </div>
+                  <div class="col-md-2">
+                    <select class="form-select" aria-label="Default select example" id="qty-cart">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                    </select>
+                  </div>
+                </div>
               <br><br>
               <a href="{%url 'home' %}" class="btn btn-danger">Home</a>
               <button type="button" value="{{ product.id }}" class="btn btn-secondary" id="add-cart">Add to Cart</button>
 
               </center>
-            </div>
+              </div>
           </div>
         </div>
       </div>
@@ -50,6 +60,7 @@ $(document).on('click', '#add-cart', function(e){
     url: '{% url "cart_add" %}',
     data: {
       product_id: $('#add-cart').val(),
+      product_qty: $('#qty-cart option:selected').text(),
       csrfmiddlewaretoken: '{{ csrf_token }}',
       action: 'post'
     },
