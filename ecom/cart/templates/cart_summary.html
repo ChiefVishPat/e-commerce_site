@@ -42,7 +42,7 @@
                 <div class="row justify-content-center">
                   <div class="col-md-2">Quantity: </div>
                     <div class="col-md-2">
-                      <select class="form-select" aria-label="Default select example" id="qty-cart">
+                      <select class="form-select" aria-label="Default select example" id="select{{ product.id }}">
                         <option selected>
                           {% for key, value in quantities.items %}
                             {% if key == product.id|slugify %}
@@ -57,8 +57,8 @@
                     </div>
                   </div>
               <br><br>
-              <a href="{%url 'home' %}" class="btn btn-danger">Home</a>
-
+              <button type="button" data-index="{{product.id}}" class="btn btn-primary update-cart">Update</button>
+              <button type="button" data-index="{{product.id}}" class="btn btn-danger delete-product">Remove</button>
               </center>
             </div>
           </div>
@@ -79,5 +79,37 @@
 
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+<script>
+//check if button pressed
+$(document).on('click', '.update-cart', function(e){
+  e.preventDefault();
+
+  //grab product id
+  var productid = $(this).data('index');
+
+  $.ajax({
+    type: 'POST',
+    url: '{% url "cart_update" %}',
+    data: {
+      product_id: $(this).data('index'),
+      product_qty: $('#select' + productid + ' option:selected').text(),
+      csrfmiddlewaretoken: '{{ csrf_token }}',
+      action: 'post'
+    },
+
+    success: function(json){
+      location.reload()
+    },
+
+    error: function(xhr, errmsg, err){
+
+    }
+
+  });
+
+})
+
+</script>
 
 {% endblock %}

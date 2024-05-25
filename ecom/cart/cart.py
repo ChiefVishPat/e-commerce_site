@@ -45,6 +45,17 @@ class Cart():
 
         self.session.modified = True
 
+    def update(self, product, quantity):
+        product_id = str(product)
+        product_qty = int(quantity)
+
+        user_cart = self.cart
+
+        #update dictionary aka the cart
+        user_cart[product_id] = product_qty
+
+        self.session.modified = True
+        return user_cart
     
     
 
