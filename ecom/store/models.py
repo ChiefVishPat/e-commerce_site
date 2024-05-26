@@ -37,15 +37,15 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
-    
-    #create a user profile by default when they sign up
-    def create_profile(sender, instance, created, **kwargs):
-        if created:
-            user_profile = Profile(user=instance)
-            user_profile.save()
-    
-    #automate the profile creation
-    post_save.connect(create_profile, sender=User)
+
+#create a user profile by default when they sign up
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        user_profile = Profile(user=instance)
+        user_profile.save()
+
+#automate the profile creation
+post_save.connect(create_profile, sender=User)
     
 #all of our products
 class Product(models.Model):

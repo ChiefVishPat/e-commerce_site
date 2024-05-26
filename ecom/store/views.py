@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
-from .models import Product, Category
+from .models import Product, Category, Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from django import forms
-from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm
+from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm, UserInfoForm
 from django.contrib import messages
+from django import forms
 
 app_name = 'store'
 
@@ -81,8 +81,8 @@ def register_user(request):
             #login user
             user = authenticate(username=username, password=password)
             login(request, user)
-            messages.success(request, ("Thanks for creating an account " + username + "\nYou can login below now"))
-            return redirect('login')
+            messages.success(request, ("Thanks for creating an account Chief " + username + ". Fill out user info below"))
+            return redirect('update_info')
         #if the form is invalid
         else:
             messages.success(request, ("Error creating account - Please try again"))
@@ -132,5 +132,19 @@ def update_password(request):
         messages.success(request, ("Please login to update your password, Chief!"))
         return redirect('home')
 
+def update_info(request):
+    if request.user.is_authenticated:
+        curr_user = Profile.objects.get(user__id=request.user.id)    #lookup profile in Profile db model that matches user id
+        form = UserInfoForm(request.POST or None, instance=curr_user)    #obtain user id and compare it to profile id
 
-    return render(request, 'update_password.html', {})
+        #if user submits a valid update form
+        if form.is_valid():
+            form.save()    #save the user   #relog them in (django naunce we have to do when we update a user)
+            messages.success(request, ("Your Info Has Been Updated, Chief"))
+            return redirect('home')
+        else:   #otherwise we want them to resubmit a valid form
+            return render(request, 'update_info.html', {'form': form})
+        
+    else:   #if they're not logged in, we want to redirect them to the login page
+        messages.success(request, ("Please login to update your info, Chief!"))
+        return redirect('home')
