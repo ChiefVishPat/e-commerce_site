@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Product, Category, Profile
+from cart.cart import Cart
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -7,6 +8,7 @@ from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm, UserInfoForm
 from django.contrib import messages
 from django import forms
 from django.db.models import Q
+import json
 
 app_name = 'store'
 
@@ -67,6 +69,23 @@ def login_user(request):
         #login was successful
         if user is not None:
             login(request, user)
+
+            #shopping cart stuff
+            curr_user = Profile.objects.get(user__id=request.user.id)
+            #get the saved cart
+            saved_cart = curr_user.old_cart
+            # Convert database string to python dictionary
+            if saved_cart:
+                # Convert to dictionary using JSON
+                converted_cart = json.loads(saved_cart)
+                # Add the loaded cart dictionary to our session
+                # Get the cart
+                cart = Cart(request)
+                # Loop thru the cart and add the items from the database
+                for key,value in converted_cart.items():
+                    cart.db_add(product=key, quantity=value)
+
+
             messages.success(request, ("You have been logged in!"))
             return redirect('home')
         #login is unsuccessful
