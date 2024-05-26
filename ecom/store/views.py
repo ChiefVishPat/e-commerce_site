@@ -9,6 +9,10 @@ from django.contrib import messages
 
 app_name = 'store'
 
+def category_summary(request):
+    categories = Category.objects.all() #grab all the categories from the Category db model
+    return render(request, 'category_summary.html', {'categories': categories})
+
 def category(request, foo):
     foo = foo.replace('-', ' ')     #replace '-' with spaces
 
