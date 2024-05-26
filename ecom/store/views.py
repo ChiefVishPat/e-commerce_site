@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm, UserInfoForm
+from payment.forms import ShippingForm
+from payment.models import ShippingAddress
 from django.contrib import messages
 from django import forms
 from django.db.models import Q
@@ -170,15 +172,18 @@ def update_password(request):
 def update_info(request):
     if request.user.is_authenticated:
         curr_user = Profile.objects.get(user__id=request.user.id)    #lookup profile in Profile db model that matches user id
+        shipping_user = ShippingAddress.objects.get(id=request.user.id) #get user's shipping info
         form = UserInfoForm(request.POST or None, instance=curr_user)    #obtain user id and compare it to profile id
+        shipping_form = ShippingForm(request.POST or None, instance=shipping_user)  #get the shipping form
 
         #if user submits a valid update form
-        if form.is_valid():
-            form.save()    #save the user   #relog them in (django naunce we have to do when we update a user)
+        if form.is_valid() or shipping_form.is_valid():
+            form.save()    #save the user form
+            shipping_form.save() #save the shipping form
             messages.success(request, ("Your Info Has Been Updated, Chief"))
             return redirect('home')
         else:   #otherwise we want them to resubmit a valid form
-            return render(request, 'update_info.html', {'form': form})
+            return render(request, 'update_info.html', {'form': form, 'shipping_form': shipping_form})
         
     else:   #if they're not logged in, we want to redirect them to the login page
         messages.success(request, ("Please login to update your info, Chief!"))
