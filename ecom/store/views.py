@@ -89,3 +89,6 @@ def register_user(request):
             return redirect('register')
     else:
         return render(request, 'register.html', {'form':form})
+    
+def update_user(request):
+    return render(request, 'update_user.html', {})
