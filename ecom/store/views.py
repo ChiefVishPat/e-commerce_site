@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .forms import SignUpForm, UpdateUserForm
+from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm
 from django.contrib import messages
 
 app_name = 'store'
@@ -108,3 +108,29 @@ def update_user(request):
     else:   #if they're not logged in, we want to redirect them to the login page
         messages.success(request, ("Please login to update your account, Chief!"))
         return redirect('home')
+    
+def update_password(request):
+    #check if user is logged in
+    if request.user.is_authenticated:
+        curr_user = request.user
+        #did they fill out form
+        if request.method == 'POST':
+            form = ChangePasswordForm(curr_user, request.POST)
+            #is the form valid
+            if form.is_valid():
+                form.save()
+                messages.success(request, ("Password Updated, Chief! Please log in again"))
+                return redirect('login')
+            else:
+                for error in list(form.errors.values()):
+                    messages.error(request, error)
+                return redirect('update_password')
+        else:
+            form = ChangePasswordForm(curr_user)
+            return render(request, 'update_password.html', {'form': form})
+    else:
+        messages.success(request, ("Please login to update your password, Chief!"))
+        return redirect('home')
+
+
+    return render(request, 'update_password.html', {})
