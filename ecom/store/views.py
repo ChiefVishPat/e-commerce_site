@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .forms import SignUpForm
+from .forms import SignUpForm, UpdateUserForm
 from django.contrib import messages
 
 app_name = 'store'
@@ -91,4 +91,20 @@ def register_user(request):
         return render(request, 'register.html', {'form':form})
     
 def update_user(request):
-    return render(request, 'update_user.html', {})
+    #if they're logged in, we want to let them be able to update their info
+    if request.user.is_authenticated:
+        curr_user = User.objects.get(id=request.user.id)    #lookup user in User db model. request.user.id gets a user's id 
+        user_form = UpdateUserForm(request.POST or None, instance=curr_user)    #obtain user form
+
+        #if user submits a valid update form
+        if user_form.is_valid():
+            user_form.save()    #save the user
+            login(request, curr_user)   #relog them in (django naunce we have to do when we update a user)
+            messages.success(request, ("ChiefUser Has Been Updated"))
+            return redirect('home')
+        else:   #otherwise we want them to resubmit a valid form
+            return render(request, 'update_user.html', {'user_form': user_form})
+        
+    else:   #if they're not logged in, we want to redirect them to the login page
+        messages.success(request, ("Please login to update your account, Chief!"))
+        return redirect('home')

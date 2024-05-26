@@ -10,14 +10,14 @@
   </div>
 </header>
 
-<!-- Login Function-->
+<!-- Update Function-->
 <div class="container my-5">
   <div class="row justify-content-center">
     <div class="col-8">
       <br /><br />
       <form method="POST" action="{% url 'update_user' %}">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ user_form.as_p }}
         <br/><br/>
         <button type="submit" class="btn btn-danger">Update Profile</button>
         
