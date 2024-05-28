@@ -172,7 +172,7 @@ def update_password(request):
 def update_info(request):
     if request.user.is_authenticated:
         curr_user = Profile.objects.get(user__id=request.user.id)    #lookup profile in Profile db model that matches user id
-        shipping_user = ShippingAddress.objects.get(id=request.user.id) #get user's shipping info
+        shipping_user = ShippingAddress.objects.get(user__id=request.user.id) #get user's shipping info
         form = UserInfoForm(request.POST or None, instance=curr_user)    #obtain user id and compare it to profile id
         shipping_form = ShippingForm(request.POST or None, instance=shipping_user)  #get the shipping form
 
